@@ -32,9 +32,32 @@ body {
 .card {
     width: 200px;
     height: 200px;
-    background-color: var(--yellow);
     color: var(--blue);
     font-size: 3rem;
     border-radius: 8px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.3s;
 }
 
+.card:hover {
+    transform: rotateY(180deg);
+}
+
+.card__front,
+.card__back {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.card__front {
+    background-color: lightcoral;
+}
+
+.card__back {
+    background-color: lightblue;
+    transform: rotateY(180deg);
+}
