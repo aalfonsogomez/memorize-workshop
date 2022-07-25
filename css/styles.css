@@ -1,3 +1,10 @@
+:root {
+    --yellow: #ffcc03;
+    --blue: #386abb;
+    --dark-blue: #1e3b71;
+}
+
+
 *,
 *::before,
 *::after {
@@ -6,5 +13,28 @@
 
 body {
   background-color: #333;
+  font-family: sans-serif;
+  color: var(--yellow);
+  text-align: center;
+  display: grid;
+  place-items: center;
+}
+
+.game-container {
+    background-color: var(--dark-blue);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    padding: 15px;
+    width: 900px;
+}
+
+.card {
+    width: 200px;
+    height: 200px;
+    background-color: var(--yellow);
+    color: var(--blue);
+    font-size: 3rem;
+    border-radius: 8px;
 }
 
