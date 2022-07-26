@@ -44,8 +44,7 @@ body {
     transition: transform 0.3s;
 }
 
-.card:hover,
-.card:hover {
+.card--show {
     transform: rotateY(180deg);
 }
 
@@ -92,4 +91,4 @@ body {
 .card__front {
     background-color: lightblue;
     transform: rotateY(180deg);
-}
+ }
