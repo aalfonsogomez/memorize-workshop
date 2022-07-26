@@ -1,14 +1,16 @@
 const pokemons = [1, 2, 3, 4, 5, 6, 7, 8];
 const gameContainer = document.getElementById('game-container');
 let allCards;
-let currentCards;
+let firstSelection = undefined;
+let secondSelection = undefined;
 
 const drawCards = () => {
-    console.log(allCards);
     const fragment = document.createDocumentFragment();
     allCards.forEach(cardNumber => {
         const card = document.createElement('div');
         card.classList.add('card');
+        card.dataset.id = cardNumber;
+        card.dataset.pokewin = false;
         const cardFront = document.createElement('div');
         cardFront.classList.add('card__front');
         const cardImage = document.createElement('img');
@@ -27,16 +29,41 @@ const drawCards = () => {
 const getRandomNumber = (max = 149) => Math.floor(Math.random() * max + 1);
 
 const generatePokeCards = () => {
-    currentCards = [...new Set(Array.from({length: 4}, () => getRandomNumber()))];
+    currentCards = [...new Set(Array.from({ length: 4 }, () => getRandomNumber()))];
     allCards = [...currentCards, ...currentCards].sort(() => Math.random() - 0.5);
     currentCards.length < 4 ? generatePokeCards() : drawCards();
 };
 
-
 generatePokeCards();
 
+const hidePokeCards = (a, b) => {
+    a.classList.remove('card--show');
+    b.classList.remove('card--show');
+};
+
+const setCardsSelected = (firstElementSelected, secondElementSelected) => {
+    if (firstElementSelected.dataset.id === secondElementSelected.dataset.id) {
+        firstElementSelected.dataset.pokewin = true;
+        secondElementSelected.dataset.pokewin = true;
+    } else {
+        secondElementSelected.addEventListener(
+            'transitionend',
+            () => hidePokeCards(firstElementSelected, secondElementSelected),
+            { once: true }
+        );
+    }
+    firstSelection = undefined;
+    secondSelection = undefined;
+};
+
 gameContainer.addEventListener('click', e => {
-    if (e.target.closest('.card') !== null) {
+    if (e.target.closest('.card')) {
         e.target.parentElement.classList.add('card--show');
+        if (firstSelection === undefined) {
+            firstSelection = e.target.parentElement;
+        } else {
+            secondSelection = e.target.parentElement;
+            setCardsSelected(firstSelection, secondSelection);
+        }
     }
 });
