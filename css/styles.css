@@ -26,10 +26,10 @@ body {
 .game-container {
     background-color: var(--dark-blue);
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 15px;
     padding: 15px;
-    width: 900px;
+    width: 1300px;
 }
 
 .card {
@@ -91,4 +91,8 @@ body {
 .card__front {
     background-color: lightblue;
     transform: rotateY(180deg);
+}
+
+.fails {
+    font-size: 1.2rem;
 }

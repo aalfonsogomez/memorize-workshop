@@ -1,8 +1,10 @@
 const pokemons = [1, 2, 3, 4, 5, 6, 7, 8];
 const gameContainer = document.getElementById('game-container');
+const failElement = document.getElementById('fails-text');
 let allCards;
 let firstSelection = undefined;
 let secondSelection = undefined;
+let fails = 0;
 
 const drawCards = () => {
     const fragment = document.createDocumentFragment();
@@ -29,9 +31,9 @@ const drawCards = () => {
 const getRandomNumber = (max = 149) => Math.floor(Math.random() * max + 1);
 
 const generatePokeCards = () => {
-    currentCards = [...new Set(Array.from({ length: 4 }, () => getRandomNumber()))];
+    currentCards = [...new Set(Array.from({ length: 9 }, () => getRandomNumber()))];
     allCards = [...currentCards, ...currentCards].sort(() => Math.random() - 0.5);
-    currentCards.length < 4 ? generatePokeCards() : drawCards();
+    currentCards.length < 9 ? generatePokeCards() : drawCards();
 };
 
 generatePokeCards();
@@ -51,6 +53,8 @@ const setCardsSelected = (firstElementSelected, secondElementSelected) => {
             () => hidePokeCards(firstElementSelected, secondElementSelected),
             { once: true }
         );
+        fails = fails + 1;
+        failElement.textContent=`Fails: ${fails}`;
     }
     firstSelection = undefined;
     secondSelection = undefined;
