@@ -54,20 +54,22 @@ const setCardsSelected = (firstElementSelected, secondElementSelected) => {
             { once: true }
         );
         fails = fails + 1;
-        failElement.textContent=`Fails: ${fails}`;
+        failElement.textContent = `Fails: ${fails}`;
     }
     firstSelection = undefined;
     secondSelection = undefined;
 };
 
 gameContainer.addEventListener('click', e => {
-    if (e.target.parentElement.classList.contains('card') && e.target.parentElement.dataset.pokewin === 'false'){
+    if (e.target.parentElement.classList.contains('card') && e.target.parentElement.dataset.pokewin === 'false') {
         e.target.parentElement.classList.add('card--show');
         if (firstSelection === undefined) {
             firstSelection = e.target.parentElement;
         } else {
-            secondSelection = e.target.parentElement;
-            setCardsSelected(firstSelection, secondSelection);
+            if (firstSelection !== e.target.parentElement) {
+                secondSelection = e.target.parentElement;
+                setCardsSelected(firstSelection, secondSelection);
+            }
         }
     }
 });
