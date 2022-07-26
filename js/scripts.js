@@ -61,7 +61,7 @@ const setCardsSelected = (firstElementSelected, secondElementSelected) => {
 };
 
 gameContainer.addEventListener('click', e => {
-    if (e.target.closest('.card')) {
+    if (e.target.parentElement.classList.contains('card') && e.target.parentElement.dataset.pokewin === 'false'){
         e.target.parentElement.classList.add('card--show');
         if (firstSelection === undefined) {
             firstSelection = e.target.parentElement;
