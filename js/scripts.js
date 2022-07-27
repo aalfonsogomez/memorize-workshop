@@ -5,6 +5,20 @@ let allCards;
 let firstSelection = undefined;
 let secondSelection = undefined;
 let fails = 0;
+let canPlay = false;
+
+const showAllCards = (allCardsElements) => {
+    allCardsElements.forEach(card => {
+        card.classList.add('card--show');
+    });
+}
+
+const hideAllCards = (allCardsElements) => {
+    allCardsElements.forEach(card => {
+        card.classList.remove('card--show');
+    });
+    canPlay = true;
+}
 
 const drawCards = () => {
     const fragment = document.createDocumentFragment();
@@ -26,6 +40,11 @@ const drawCards = () => {
         fragment.appendChild(card);
     });
     gameContainer.appendChild(fragment);
+
+    const allCardsElements = document.querySelectorAll('.card');
+    setTimeout(() => showAllCards(allCardsElements), 1000)
+    setTimeout(() => hideAllCards(allCardsElements), 3000)
+
 };
 
 const getRandomNumber = (max = 149) => Math.floor(Math.random() * max + 1);
@@ -61,14 +80,16 @@ const setCardsSelected = (firstElementSelected, secondElementSelected) => {
 };
 
 gameContainer.addEventListener('click', e => {
-    if (e.target.parentElement.classList.contains('card') && e.target.parentElement.dataset.pokewin === 'false') {
-        e.target.parentElement.classList.add('card--show');
-        if (firstSelection === undefined) {
-            firstSelection = e.target.parentElement;
-        } else {
-            if (firstSelection !== e.target.parentElement) {
-                secondSelection = e.target.parentElement;
-                setCardsSelected(firstSelection, secondSelection);
+    if (canPlay) {
+        if (e.target.parentElement.classList.contains('card') && e.target.parentElement.dataset.pokewin === 'false') {
+            e.target.parentElement.classList.add('card--show');
+            if (firstSelection === undefined) {
+                firstSelection = e.target.parentElement;
+            } else {
+                if (firstSelection !== e.target.parentElement) {
+                    secondSelection = e.target.parentElement;
+                    setCardsSelected(firstSelection, secondSelection);
+                }
             }
         }
     }
