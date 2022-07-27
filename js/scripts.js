@@ -1,11 +1,15 @@
 const pokemons = [1, 2, 3, 4, 5, 6, 7, 8];
 const gameContainer = document.getElementById('game-container');
 const failElement = document.getElementById('fails-text');
+const pointsElement = document.getElementById('points-text');
+const comboElement = document.getElementById('combo-text');
 let allCards;
 let firstSelection = undefined;
 let secondSelection = undefined;
 let fails = 0;
 let canPlay = false;
+let combo = 1;
+let points = 0;
 
 const showAllCards = (allCardsElements) => {
     allCardsElements.forEach(card => {
@@ -66,15 +70,20 @@ const setCardsSelected = (firstElementSelected, secondElementSelected) => {
     if (firstElementSelected.dataset.id === secondElementSelected.dataset.id) {
         firstElementSelected.dataset.pokewin = true;
         secondElementSelected.dataset.pokewin = true;
+        points = points + combo * 10;
+        combo = combo + 1;
+        pointsElement.textContent = `Total points: ${points}`;
     } else {
         secondElementSelected.addEventListener(
             'transitionend',
             () => hidePokeCards(firstElementSelected, secondElementSelected),
             { once: true }
         );
+        combo = 1;
         fails = fails + 1;
         failElement.textContent = `Fails: ${fails}`;
     }
+    comboElement.textContent = `X ${combo}`;
     firstSelection = undefined;
     secondSelection = undefined;
 };

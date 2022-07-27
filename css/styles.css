@@ -92,7 +92,17 @@ body {
     background-color: lightblue;
     transform: rotateY(180deg);
 }
+.game-info {
+    display: flex;
+    justify-content: space-between;
+}
 
+.combo {
+    margin-top: 0.5rem;
+    font-size: 2rem;
+}
+
+.points,
 .fails {
     font-size: 1.2rem;
 }
