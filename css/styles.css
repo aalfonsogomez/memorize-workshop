@@ -19,8 +19,20 @@ body {
     font-family: sans-serif;
     color: var(--yellow);
     text-align: center;
+}
+
+.main {
     display: grid;
-    place-items: center;
+    justify-items: center;
+    grid-template-columns: 80% 20%;
+}
+
+.scoreboard {
+    background-color: var(--dark-blue);
+    justify-self: start;
+    width: 80%;
+    border: 2px dashed var(--yellow);
+    font-size: 2rem;
 }
 
 .game-container {
@@ -29,7 +41,8 @@ body {
     grid-template-columns: repeat(6, 1fr);
     gap: 15px;
     padding: 15px;
-    width: 1300px;
+    border: 2px dashed var(--yellow);
+    /* width: 1300px; */
 }
 
 .card {

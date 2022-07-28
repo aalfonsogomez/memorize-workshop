@@ -3,6 +3,7 @@ const gameContainer = document.getElementById('game-container');
 const failElement = document.getElementById('fails-text');
 const pointsElement = document.getElementById('points-text');
 const comboElement = document.getElementById('combo-text');
+const scoreboardElement = document.getElementById('scoreboard');
 let allCards;
 let firstSelection = undefined;
 let secondSelection = undefined;
@@ -10,6 +11,36 @@ let fails = 0;
 let canPlay = false;
 let combo = 1;
 let points = 0;
+const ranking = [
+    {name: 'Juan', points: 0},
+    {name: 'Pedro', points: 0},
+    {name: 'Maria', points: 0},
+    {name: 'Juan', points: 0},
+    {name: 'Juan', points: 0},
+    {name: 'Juan', points: 0},
+    {name: 'Juan', points: 0},
+    {name: 'Juan', points: 0},
+    {name: 'Juan', points: 0}
+];
+
+const drawRanking = rankingData => {
+    const fragment = document.createDocumentFragment();
+    for (position of rankingData) {
+        const data = document.createElement('p');
+        data.textContent = `${position.name} - ${position.points}`;
+        fragment.appendChild(data);
+    }
+    scoreboardElement.appendChild(fragment);
+};
+
+const getDataFromLocalStorage = () => {
+    const rankingData = localStorage.getItem('rankingData');
+    if (!rankingData) {
+        localStorage.setItem('rankingData', JSON.stringify(ranking));
+    }
+    drawRanking(JSON.parse(rankingData));
+
+};
 
 const showAllCards = (allCardsElements) => {
     allCardsElements.forEach(card => {
@@ -48,6 +79,7 @@ const drawCards = () => {
     const allCardsElements = document.querySelectorAll('.card');
     setTimeout(() => showAllCards(allCardsElements), 1000)
     setTimeout(() => hideAllCards(allCardsElements), 3000)
+    getDataFromLocalStorage();
 
 };
 
