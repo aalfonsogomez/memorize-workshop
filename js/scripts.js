@@ -98,22 +98,30 @@ const hidePokeCards = (a, b) => {
     b.classList.remove('card--show');
 };
 
+const setPoints = (error = false) => {
+    if (!error) {
+        points = points + combo * 10;
+        combo = combo + 1;
+        pointsElement.textContent = `Total points: ${points}`;
+    } else {
+        combo = 1;
+        fails = fails + 1;
+        failElement.textContent = `Fails: ${fails}`;
+    }
+};
+
 const setCardsSelected = (firstElementSelected, secondElementSelected) => {
     if (firstElementSelected.dataset.id === secondElementSelected.dataset.id) {
         firstElementSelected.dataset.pokewin = true;
         secondElementSelected.dataset.pokewin = true;
-        points = points + combo * 10;
-        combo = combo + 1;
-        pointsElement.textContent = `Total points: ${points}`;
+        setPoints();
     } else {
         secondElementSelected.addEventListener(
             'transitionend',
             () => hidePokeCards(firstElementSelected, secondElementSelected),
             { once: true }
         );
-        combo = 1;
-        fails = fails + 1;
-        failElement.textContent = `Fails: ${fails}`;
+        setPoints(true)
     }
     comboElement.textContent = `X ${combo}`;
     firstSelection = undefined;
