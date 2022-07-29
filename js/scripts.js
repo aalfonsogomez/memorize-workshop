@@ -6,6 +6,8 @@ const comboElement = document.getElementById('combo-text');
 const scoreboardElement = document.getElementById('scoreboard');
 const modalElement = document.getElementById('modal');
 const formElement = document.getElementById('form');
+const modalWinElement = document.getElementById('modal-win');
+const modalRestartElement = document.getElementById('modal-restart');
 let allCards;
 let firstSelection = undefined;
 let secondSelection = undefined;
@@ -16,9 +18,14 @@ let points = 0;
 const ranking = [];
 let rankingData = localStorage.getItem('rankingData');
 let user = '';
-let totalCards = 9;
+let totalCards = 2;
+
+const sortRankingData = () => {
+    return JSON.parse(rankingData).sort((a, b) => b.points - a.points);
+};
 
 const drawRanking = rankingData => {
+    rankingData = sortRankingData();
     scoreboardElement.textContent = '';
     const fragment = document.createDocumentFragment();
     for (position of rankingData) {
@@ -30,12 +37,9 @@ const drawRanking = rankingData => {
 };
 
 const getDataFromLocalStorage = () => {
-    const rankingData = localStorage.getItem('rankingData');
     if (!rankingData) {
         localStorage.setItem('rankingData', JSON.stringify(ranking));
     }
-    drawRanking(JSON.parse(rankingData));
-
 };
 
 const saveUserData = (name, points) => {
@@ -65,22 +69,23 @@ const hideAllCards = (allCardsElements) => {
 }
 
 const drawCards = () => {
+    gameContainer.textContent = '';
     const fragment = document.createDocumentFragment();
     allCards.forEach(cardNumber => {
         const card = document.createElement('div');
         card.classList.add('card');
         card.dataset.id = cardNumber;
         card.dataset.pokewin = false;
+        const cardBack = document.createElement('div');
+        cardBack.classList.add('card__back');
+        card.appendChild(cardBack);
         const cardFront = document.createElement('div');
         cardFront.classList.add('card__front');
         const cardImage = document.createElement('img');
         cardImage.src = `assets/images/png/${cardNumber}.png`;
         cardImage.classList.add('card__img');
         cardFront.appendChild(cardImage);
-        card.append(cardFront);
-        const cardBack = document.createElement('div');
-        cardBack.classList.add('card__back');
-        card.appendChild(cardBack);
+        card.appendChild(cardFront);
         fragment.appendChild(card);
     });
     gameContainer.appendChild(fragment);
@@ -95,9 +100,9 @@ const drawCards = () => {
 const getRandomNumber = (max = 150) => Math.floor(Math.random() * max + 1);
 
 const generatePokeCards = () => {
-    currentCards = [...new Set(Array.from({ length: 9 }, () => getRandomNumber()))];
+    currentCards = [...new Set(Array.from({ length: totalCards }, () => getRandomNumber()))];
     allCards = [...currentCards, ...currentCards].sort(() => Math.random() - 0.5);
-    currentCards.length < 9 ? generatePokeCards() : drawCards();
+    currentCards.length < totalCards ? generatePokeCards() : drawCards();
 };
 
 const hidePokeCards = (a, b) => {
@@ -164,11 +169,16 @@ gameContainer.addEventListener('click', e => {
 formElement.addEventListener('submit', e => {
     e.preventDefault();
     user = e.target.name.value;
-    saveUserData(user, 0);
     formElement.remove();
     generatePokeCards();
     modalElement.classList.remove('modal--show');
+    drawRanking(JSON.parse(rankingData));
 });
+
+modalRestartElement.addEventListener('click', () => {
+    generatePokeCards();
+    modalWinElement.classList.remove('modal-win--show');
+  });
 
 window.addEventListener('load', e => {
     getDataFromLocalStorage();
